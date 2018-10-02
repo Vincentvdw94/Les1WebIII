@@ -25,7 +25,6 @@ namespace Banking2C1.Models.Domein
 
 
         private decimal _balance;
-        public const decimal WithdrawCost = 0.10M; //m is voor deciMal;
         private IList<Transaction> _transactions;
         public decimal Balance
         {
@@ -48,9 +47,10 @@ namespace Banking2C1.Models.Domein
             Balance += amount * nrOfTimes;
             _transactions.Add(new Transaction(amount, TransactionType.Deposit));
         }
-        public void Withdraw(decimal amount)
+        //virtual zorgt er voor dat in de subklasses deze methode kan overschreden worden.
+        public virtual void Withdraw(decimal amount)
         {
-            Balance -= amount + WithdrawCost; //gaat autom"atisch naar setter;
+            Balance -= amount ; //gaat autom"atisch naar setter;
             _transactions.Add(new Transaction(amount, TransactionType.Withdraw ));
 
         }
