@@ -25,7 +25,8 @@ namespace Banking2C1.Models.Domein
 
 
         private decimal _balance;
-        public  const decimal WithdrawCost = 0.10M; //m is voor deciMal;
+        public const decimal WithdrawCost = 0.10M; //m is voor deciMal;
+        private IList<Transaction> _transactions;
         public decimal Balance
         {
             get { return _balance; }
@@ -45,11 +46,19 @@ namespace Banking2C1.Models.Domein
         {
 
             Balance += amount * nrOfTimes;
+            _transactions.Add(new Transaction(amount, TransactionType.Deposit));
         }
         public void Withdraw(decimal amount)
         {
-            Balance -= amount + WithdrawCost; //gaat automatisch naar setter;
+            Balance -= amount + WithdrawCost; //gaat autom"atisch naar setter;
+            _transactions.Add(new Transaction(amount, TransactionType.Withdraw ));
+
         }
+        public IEnumerable<Transaction> Transactions {
+            get { return _transactions; }
+
+        }
+        public int NrOfTransactions { get { return _transactions.Count; } }
 
         private string _accountNumber;
         public string AccountNumber
@@ -67,6 +76,7 @@ namespace Banking2C1.Models.Domein
         public BankAccount(string accountNumber)
         {
             AccountNumber = accountNumber;
+            _transactions = new List<Transaction>();
         }
 
         public BankAccount(string accountNumber, decimal balance) : this(accountNumber)
